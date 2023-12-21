@@ -8,10 +8,11 @@ from endpoint.models import Cloth
 
 def get_json(object, server, full=False):
     d = {
-        'title': f'{server}/title/{object.slug_title}',
+        'title': object.title,
         'collection': f'{server}/collection/{object.slug_title}',
         'type': f'{server}/type/{object.slug_title}',
-        'price': f'{server}/price/{object.slug_title}',
+        'price': object.price,
+        'image': f'{server}/image/{object.slug_title}',
     }
     if full:
         d['size'] = f'{server}/size/{object.slug_title}'
@@ -22,6 +23,7 @@ def get_json(object, server, full=False):
 
 def detail(requests, slug_title):
     return JsonResponse(get_json(get_object_or_404(Cloth, slug_title=slug_title), requests.headers['HOST'], full=True))
+
 
 # Create your views here.
 def main(requests):
