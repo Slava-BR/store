@@ -22,24 +22,24 @@ def get_json(object, server, full=False):
 
 
 def detail(requests, slug_title):
-    return JsonResponse(get_json(get_object_or_404(Cloth, slug_title=slug_title), requests.headers['HOST'], full=True))
+    return get_json(get_object_or_404(Cloth, slug_title=slug_title), requests.headers['HOST'], full=True)
 
 
 # Create your views here.
 def main(requests):
     data = Cloth.objects.filter(main=True)
-    result = {}
+    result = []
     for i in data:
-        result[i.title] = get_json(i, requests.headers['HOST'])
-    return JsonResponse(result)
+        result.append(get_json(i, requests.headers['HOST']))
+    return HttpResponse(result)
 
 
 def collection(requests):
     data = Cloth.objects.filter(collections=requests.GET.get('collections'))
-    result = {}
+    result = []
     for i in data:
-        result[i.title] = get_json(i, requests.headers['HOST'])
-    return JsonResponse(result)
+        result.append(get_json(i, requests.headers['HOST']))
+    return HttpResponse(result)
 
 
 def image(requests, slug_title):
